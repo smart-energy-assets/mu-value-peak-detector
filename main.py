@@ -82,3 +82,5 @@ def main(request):
         get_peaks(dataset_data)
 
     print("[INFO] End peak serach execution")
+     # Return an OK HTTP response
+    return "OK"
