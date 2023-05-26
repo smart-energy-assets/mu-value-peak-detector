@@ -81,6 +81,6 @@ def main(request):
         print(f"[INFO] get peaks for MU ID {dataset_id} in all its lines ")
         get_peaks(dataset_data)
 
-    print("[INFO] End peak serach execution")
+    print("[INFO] End peak search execution")
     # Return an OK HTTP response
     return "OK"
