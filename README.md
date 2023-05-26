@@ -1,12 +1,16 @@
-# mu-value-peak-detect (Cloud Function)
-This code detects value peak from MU datasets to be analyzed.
+# mu-peak-detect (Cloud Function)
 This is a Cloud Function that search peak Volum values of Measurement Units (negative delta values coming from the substraction of the current value and the previous of the same MU and line).
 
+
 ## Overview
-This tool gets a list of UM's and a range dates and looks for negative delta values. This will return a list of rows containing all dataset values inclufding the delta with negative value in the Cloud Function log.
+This tool gets a list of UM's and a range dates and looks for negative delta values. This will return a list of rows containing all dataset values including the delta with negative value in the Cloud Function log.
+
+The data queried is coming from GCP-BigQuery at `sea-produccion.gas_data.GasVolumes` dataset.
 
 
 ## How to run
+
+To execute this fucntion follow the next steps:
 
 - Go to [Google Cloud Console](https://cloud.google.com/).
 - Select `SEA Produccion`project.
