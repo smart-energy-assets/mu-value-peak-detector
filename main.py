@@ -41,7 +41,7 @@ def get_negative_deltas(dataset):
     negative_rows = dataset[dataset['Delta_Vn'] < 0]
     if len(negative_rows.index) > 0:
         print(f"Number of peaks: {len(negative_rows.index)}")
-        print(negative_rows)
+        print(negative_rows.to_string(index=False))
     else:
         print("No")
 
