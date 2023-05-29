@@ -37,13 +37,15 @@ def get_negative_deltas(dataset):
     # Calculate the Delta_Vn between the current and previous Vn values
     dataset['Delta_Vn'] = dataset['Vn'].diff().round(2)
     # Filter and print the rows where the 'Delta_Vn' column is negative
-    print("\nRows with negative delta Vn:")
+    # print("\nRows with negative delta Vn:")
     negative_rows = dataset[dataset['Delta_Vn'] < 0]
     if len(negative_rows.index) > 0:
-        print(f"Number of peaks: {len(negative_rows.index)}")
+        # print(f"Number of peaks: {len(negative_rows.index)}")
         print(negative_rows.to_string(index=False))
-    else:
-        print("No")
+    # else:
+    #     print("No")
+
+    return len(negative_rows.index)
 
 def get_peaks(df):
     # TS,Vn,muName,lName,source
@@ -55,16 +57,19 @@ def get_peaks(df):
         dataset = df[df['lName'] == value]
         datasets.append(dataset)
 
+    number_peaks = 0
     for index, dataset in enumerate(datasets):
         # Assuming you have a dataset stored in a DataFrame called 'data'
         row_index = 0
         mu_name = df.loc[row_index, 'muName']
         lName = df.loc[row_index, 'lName']
-        print(f"\n{'-'*60}\nDataset #{index}:\n - Measurement Unit name: {mu_name}\n - Line name: {lName}\n{'-'*60}")
-        get_negative_deltas(dataset)
+        # print(f"\n{'-'*60}\nDataset #{index}:\n - Measurement Unit name: {mu_name}\n - Line name: {lName}\n{'-'*60}")
+        number_peaks += get_negative_deltas(dataset)
+    
+    return number_peaks
 
 def main(request):
-    print("[INFO] Start peak serach execution")
+    print("[INFO] Start peak search execution")
     # Main execution
     request_json = request.get_json()
     # Parse the JSON input
@@ -74,12 +79,19 @@ def main(request):
     print(f"[INFO] List of MU's range -> {list_datasets_id}")
     print(f"[INFO] Date range -> From {range_start_date} to {range_end_date}")
 
+    number_peaks = 0
     # Start searching fopr peaks in all listed MU's
     for dataset_id in list_datasets_id:
-        print(f"[INFO] Query data from MU ID {dataset_id}")
+        print(f"[INFO] Detecting peaks of MU ID '{dataset_id}':")
+        # print(f"[INFO] Query data from MU ID {dataset_id}")
         dataset_data = get_data_from_query(dataset_id, range_start_date, range_end_date)
-        print(f"[INFO] get peaks for MU ID {dataset_id} in all its lines ")
-        get_peaks(dataset_data)
+        # print(f"[INFO] Get peaks for MU ID {dataset_id} in all its lines ")
+        number_peaks = get_peaks(dataset_data)
+
+        if number_peaks == 0:
+            print(f" * No peaks")
+
+
 
     print("[INFO] End peak search execution")
     # Return an OK HTTP response
